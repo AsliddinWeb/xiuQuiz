@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testlar Ro'yxati</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #2d6a4f 0%, #52b788 50%, #d8f3dc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 50px;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+        h1, h3 {
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            color: #2d6a4f;
+        }
+        .card-header {
+            background-color: #40916c;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .btn-outline-primary {
+            border-color: #2d6a4f;
+            color: #2d6a4f;
+        }
+        .btn-outline-primary:hover {
+            background-color: #2d6a4f;
+            color: #ffffff;
+        }
+        .btn-danger {
+            background-color: #e63946;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #c62828;
+        }
+        .btn-secondary {
+            background-color: #adb5bd;
+            color: #ffffff;
+            border: none;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-graduation-cap"></i> Xalqaro Innovatsion Universitet Test Tizimi
+        </h1>
+        <h3 class="text-center text-light mb-4">
+            <i class="fas fa-list"></i> Testlar Ro'yxati
+        </h3>
+        <div class="row">
+            {% for quiz in quizzes %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-book"></i> {{ quiz.title }}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <i class="fas fa-info-circle"></i> {{ quiz.description|default:"Test haqida ma'lumot mavjud emas." }}
+                            </p>
+                            <p>
+                                <i class="fas fa-clock"></i> <strong>Oxirgi muddat:</strong> {{ quiz.deadline }}
+                            </p>
+                            <p>
+                                <i class="fas fa-redo"></i> <strong>Maksimal urinishlar:</strong> {{ quiz.max_attempts }}
+                            </p>
+                        </div>
+                        <div class="card-footer text-center">
+                            {% if quiz.attempt_count >= quiz.max_attempts %}
+                                <button class="btn btn-secondary w-100" disabled>
+                                    <i class="fas fa-ban"></i> Urinishlar Tugadi
+                                </button>
+                            {% else %}
+                                <a href="{% url 'quiz_detail' quiz.id %}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-play-circle"></i> Testni Boshlash
+                                </a>
+                            {% endif %}
+                            {% if quiz.attempt_count > 0 %}
+                                <a href="{% url 'quiz_result' quiz.id student.id %}" class="btn btn-success mt-2 w-100">
+                                    <i class="fas fa-chart-bar"></i> Natijani Ko'rish
+                                </a>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'logout' %}" class="btn btn-danger">
+                <i class="fas fa-sign-out-alt"></i> Tizimdan Chiqish
+            </a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> <!-- Font Awesome -->
+</body>
+</html>
